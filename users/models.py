@@ -1,6 +1,6 @@
 import uuid
 from django.db import models
-from django.contrib.auth.models import AbstractUser, PermissionsMixin, BaseUserManager
+from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
 from django.utils import timezone
 
 
@@ -21,12 +21,12 @@ class UserManager(BaseUserManager):
         return self.create_user(email, password, **extra_fields)
 
 
-class User(AbstractUser, PermissionsMixin):
+class User(AbstractBaseUser, PermissionsMixin):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, unique=True)
     email = models.EmailField(max_length=100, unique=True)
     first_name = models.CharField(max_length=100)
-    last_name = models.CharField(max_length=100, blank=True)
-    surname = models.CharField(max_length=100, blank=True)
+    last_name = models.CharField(max_length=100)
+    surname = models.CharField(max_length=100)
 
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
@@ -39,7 +39,7 @@ class User(AbstractUser, PermissionsMixin):
     objects = UserManager()
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['first_name']
+    REQUIRED_FIELDS = ['first_name', 'last_name', 'surname']
 
     def __str__(self):
         return self.email

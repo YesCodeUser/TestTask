@@ -72,7 +72,7 @@ class MeView(APIView):
         return Response(serializer.data)
 
 
-class UpdateProfileView(APIView):
+class UpdateView(APIView):
     permission_classes = [IsAuthenticated]
 
     def patch(self, request):
